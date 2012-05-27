@@ -2,6 +2,7 @@ require 'rubygems'
 require 'sinatra'
 
 get '/' do
-	sleep 1
-	'wu'
+	sleep 5
+	"'wu'"
 end
+
