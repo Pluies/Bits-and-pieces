@@ -21,5 +21,9 @@ var AdModule = (function(){
 			}
 		};
 
+		for(var i=1; i<=5; i++){
+			module.loadAd(i);
+		}
+
 		return module;
 	}());
