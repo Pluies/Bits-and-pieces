@@ -1,19 +1,25 @@
-var weatherData;
+var AdModule = (function(){
+		var module = {};
+		var weatherData;
+		var adsToLoad = [];
 
-function loadWeatherData() {
-	$.get('http://localhost:4567/', function(data){
-			weatherData = data;
-		});
-}
+		$.get('http://localhost:4567/', function(data){
+				weatherData = data;
+				while( adsToLoad.length > 0 ){
+					var callback = adsToLoad.pop();
+					callback();
+				}
+			});
 
-// Start loading the data asap
-loadWeatherData();
+		module.loadAd = function(i) {
+			if(typeof(weatherData) === 'undefined'){
+				console.log('not loaded for '+i+'...');
+				adsToLoad.push( function(){module.loadAd(i)} );
+				console.log('ad pushed in the array');
+			} else {
+				$('#div'+i).html('hello, data is ' + weatherData);
+			}
+		};
 
-function loadAd(i) {
-	if(typeof(weatherData) === 'undefined'){
-		console.log('not loaded for '+i+'...');
-		setTimeout('loadAd('+i+')', 1000);
-	} else {
-		$('#div'+i).html('hello, data is ' + weatherData);
-	}
-}
+		return module;
+	}());
